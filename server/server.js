@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -176,6 +176,15 @@ app.get('/', (req, res) => {
     note: 'Access the React app at http://localhost:3000'
   });
 });
+
+// If a client build exists, serve it (useful for deploying server + client together)
+const clientBuildPath = path.join(__dirname, '..', 'client', 'build');
+if (fs.existsSync(clientBuildPath)) {
+  app.use(express.static(clientBuildPath));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(clientBuildPath, 'index.html'));
+  });
+}
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://localhost:${PORT}`);
