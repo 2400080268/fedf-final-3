@@ -6,17 +6,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Enable CORS for all origins in development, specific origins in production
-const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://fedf-final-3-rfng6h798-2400080268s-projects.vercel.app'] 
-    : true,
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 // Helper functions to read/write to our JSON "databases"
